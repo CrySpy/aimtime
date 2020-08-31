@@ -1,0 +1,180 @@
+\documentclass{article}
+\usepackage[hidelinks]{hyperref}
+\usepackage{mathtools}
+\usepackage{nicefrac}
+
+
+\title{Aiming Mechanics in World of Tanks}
+\author{CrySpy}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\pagebreak
+\section{Introduction}
+Within the game of World of Tanks a very important aspect is how long one has to wait
+before one can fire. This is presented to the player as a shrinking reticle, commingnly known as aiming circle.
+The size of the aiming circle is deterined by movement of the tank and firing of the gun.
+The paremeters the game displays regarding this is dispersion, also known as accuracy,
+and aiming time. Aiming time espeically is confusing as it might mislead the player to believe
+it is a measure of how long it takes to fully aim. 
+
+\section{Actual aiming time}
+\subsection{Derviving the aiming function}
+
+%wfactor is not 4/10 it's e to the negative -> ~0.36
+\paragraph{}First of all we must understand how the aiming circle decreases in size. 
+To do this we must look into what aiming time actually means, and how it affects aiming.
+The game says aiming is a measure of how long it takes from the current aiming circle
+to decrease by 60\% or to 40\%, of its current size, that is \(\frac{4}{10}f(t)=f(t+t_{\mathrm{aiming}})\)
+The wiki lists this as the time it takes to shrink to a \(\nicefrac{1}{3}\) of its size.
+This is troublesome as both of these are incorrect. Data mining the game files we can find the factor
+to be \(\nicefrac{1}{e}\) which is roughly equal to 36\%.
+
+\paragraph{}To derive the actual function we function we can look at a simplfied example.
+We assume that the size of the aiming circle is 1 to start with. Then we look at the size of the aimicircle
+for every aiming time interval. Then we get \[1, \frac{1}{e}, \left(\frac{1}{e}\right)^2, \left(\frac{1}{e}\right)^3 \cdots\]
+If we want to use a different starting size, such as 2.78 we get
+\[2.78, 2.78\times\frac{1}{e}, 2.78\times\left(\frac{1}{e}\right)^2, 2.78\times\left(\frac{1}{e}\right)^3 \cdots\]
+As demonstrated the fuction is mererly to mutliply by \(\nicefrac{1}{e}\) for every aiming time interval.
+With that in mind we can create a function where the exponent of \(\nicefrac{1}{e}\) is an integer for every multiple of the aiming time
+and we get 
+\[f\left(t\right) = \mathrm{Dispersion_0} \times \left(\frac{1}{e}\right)^{\frac{t}{t_{\mathrm{aiming}}}}\]
+Simplying
+\begin{equation}
+    f\left(t\right) = \mathrm{Dispersion_0} \times e^{-\frac{t}{t_{\mathrm{aiming}}}}
+    \label{eq:aimfunc}
+\end{equation}
+\subsection{Solving the aiming function for t}
+Now that we have a function that describes how the aiming circle shrinks over time
+it is temping to see if it can be used to dervive a formula for the time it takes to aim.
+If we take equation \eqref{eq:aimfunc} and replace \(f(t)\)  with the final dispersion value we get something we can solve for t
+\[\mathrm{Dispersion_{final}} = \mathrm{Dispersion_0} \times e^{-\frac{t}{t_{\mathrm{aiming}}}}\]
+\[\ln \left(\frac{\mathrm{Dispersion_{final}}}{\mathrm{Dispersion_0}} \right) = \ln\left( e^{-\frac{t}{t_{\mathrm{aiming}}}}\right)\]
+\[\ln \left(\frac{\mathrm{Dispersion_{final}}}{\mathrm{Dispersion_0}}\right) = -\frac{t}{t_{\mathrm{aiming}}} \times \ln e\]
+\[\ln \left(\frac{\mathrm{Dispersion_{final}}}{\mathrm{Dispersion_0}}\right) = -\frac{t}{t_{\mathrm{aiming}}}\]
+\[\ln \left(\frac{\mathrm{Dispersion_{final}}}{\mathrm{Dispersion_0}} \right) \times -t_{\mathrm{aiming}} = t\]
+\begin{equation}
+    \label{eq:aimtime}
+    t = - \ln \left(\frac{\mathrm{Dispersion_{final}}}{\mathrm{Dispersion_0}} \right) \times t_{\mathrm{aiming}}
+\end{equation}
+With equation \eqref{eq:aimtime} we can easily determine the time it takes to aim to fully aim a gun, or to any other point we'd like without the need
+to plot equation \eqref{eq:aimfunc}. At this point we are have the knowledge to study how a gun aims and determine how long it takes, but 
+we do not still know how to determine how much the aiming circle grows when the tank moves.
+
+\section{Talking about bloom}
+The formula for determining how the aiming circle grows relative to the tank's movement and other factors
+is present in the game files as presented here.
+D = disperion, S = speed, mv = movement, ta tr = tank traverse, tu tr = turret traverse
+\begin{equation}
+    \label{eq:bloom}
+    D = D_{f} \times \sqrt{1 + \left(D_{mv}\times S_{mv}\right)^2 + \left(D_{ta tr}\times S_{ta tr}\right)^2
++ \left(D_{tu tr}\times S_{tu tr}\right)^2 + \mathrm{shot}^2}
+\end{equation}
+
+There are a few things to note: the final dispersion, or accuracy, of the tank scales the growth of the aiming circle.
+The speed of any sort of movement is multiplied by a coefficent. This means that a slower moving tank will have a  smaller aiming circle than a faster moving tank if all else is equal.
+
+
+\section{A further look into the functions}
+\subsection{Aiming function}
+We can also see that \(\mathrm{Disperson_{final}}\) is both present in equation \eqref{eq:aimtime} and \eqref{eq:bloom}.
+This means that the accuracy of a tank does not matter in determining the time it takes to fully aim.
+With this we can modify equation \eqref{eq:aimtime} slightly and we get 
+\[t = - \ln \left(\frac{1}{\mathrm{Dispersion_{mod}}} \right) \times t_{\mathrm{aiming}}\]
+\begin{equation} \label{eq:gen}
+    t = \ln \left(\mathrm{Dispersion_{mod}}\right) \times t_{\mathrm{aiming}}
+\end{equation}
+
+Where \[D_{\mathrm{mod}} = \sqrt{1 + \left(D_{mv}\times S_{mv}\right)^2 + \left(D_{ta tr}\times S_{ta tr}\right)^2
++ \left(D_{tu tr}\times S_{tu tr}\right)^2 + \mathrm{shot}^2}\]
+
+While this simplifies the expression it is not so much of use by itself. While it does show that
+the accuracy of a tank does not determine how long it takes to fully aim, it says nothing about how big
+the aiming circle is at any point as that is removed from the formula. What we gain is 
+a generalization of the formula
+\subsection{The effect of equipment}
+What comes to mind is how equipment affects the time needed to (fully) aim. As previously shown,
+accuracy does not matter in this regard, and thus IAU is not useful in this regard. It does aim in faster
+to the base accuracy, however. What we will look at is how GLD, VSTABS, and IRM factor in.
+\paragraph{GLD}
+is the easiest to analyze. GLD will decrease the aiming time by a factor of \(\nicefrac{1}{1.1}\)
+When looking at \eqref{eq:gen} we observe that \(t_{\mathrm{aimng}}\) is just a scaling factor of \(t\)
+Thus we can conclude that the time to aim reduced by GLD is the same as the reduction in aiming time, namely
+the factor of \(\nicefrac{1}{1.1}\) or approximately 91\%
+\paragraph{VSTABS}
+and IRM are very similar. They work by reducing the dispersion penalties on tank movement,
+tank traverse, turret/gun traverse, and after shooting. IRM gives a lesser reduction than VSTABS while 
+also adding a bonus increase to the traverse speeds. Both are equal, \(\pm 10\%\). Let us take a closer look at this by
+looking at how it affects the penalty from tank traverse
+\[\left(D_{tatr}\times S_{tatr}\right)^2\]
+If we apply the bonuses as \(\left(1 \pm B\right)\) where \(B = 0.1\) we get
+\[\left( \left(1 - B\right) D_{tatr}\times (\left(1 + B\right) S_{tatr}\right)^2\]
+If we re arrange things we get
+\[\left( \left(1 - B\right) \left(1 + B \right) D_{tatr}\times S_{tatr}\right)^2 \]
+We contract
+\[\left( \left(1 - B^2 \right) D_{tatr}\times S_{tatr} \right)^2\]
+We observe that the bonus applied is \( \left(1 - B^2 \right)\), if we evaluate it for 10\% and 12.5\% we get
+\[ \left(1 - 0.1^2 \right) = 0.99\]
+\[ \left(1 - 0.125^2 \right) \approx 0.984\]
+Thus we can conclude that IRM does not provide a substantional bonus to the dipserion while traversing.
+\paragraph{In general}
+we can look at how the bonus from VSTABS and IRM applies to time to aim.
+First we recall \eqref{eq:bloom} and apply the bonus B to all of the terms.
+\[D_{\mathrm{mod}} = \sqrt{1 + \left( B \times D_{mv}\times S_{mv}\right)^2 + \left(B \times D_{ta tr}\times S_{ta tr}\right)^2
++ \left(B \times D_{tu tr}\times S_{tu tr}\right)^2 +  \left( B \times \mathrm{shot}\right)^2}\]
+If we factor out B
+\[D_{\mathrm{mod}} = \sqrt{1 + B^2 \left( \left( D_{mv}\times S_{mv}\right)^2 + \left( D_{ta tr}\times S_{ta tr}\right)^2
++ \left( D_{tu tr} \times S_{tu tr} \right)^2 + \mathrm{shot}^2 \right) } \]
+We can observe that if the addition of 1 was not present then B would reduce the modified dispersion as a factor
+If we simplify the expression so that the dispersion and speed factors are added and treated as a single variable we get
+\[D_{\mathrm{mod}} = \sqrt{1 + B ^2 \times D_p}\]
+If we divide the modified dispersion with a bonus active by a modified dispersion and take the limit of it as \(D_p\) grows we get
+\[ \lim\limits_{D_p \to \infty}  \frac{\sqrt{1 + B ^2 \times D_p}}{\sqrt{1 + D_p}} \] 
+We can combine the square roots
+\[ \lim\limits_{D_p \to \infty} \sqrt{\frac{1 + B ^2 \times D_p}{1 + D_p}} \]
+Since this is a infinity over infinity limit we need to do something about that.
+We can divide every term by \(D_p\) and we get
+\[ \lim\limits_{D_p \to \infty} \sqrt{ \frac{\nicefrac{1}{D_p} + \frac{B^2\times D_p}{D_p}}{\nicefrac{1}{D_p} + \nicefrac{D_p}{D_p}} }\]
+Simplify
+\[ \lim\limits_{D_p \to \infty} \sqrt{ \frac{0 + B^2}{0 + 1}}\]
+\[ \lim\limits_{D_p \to \infty} \sqrt{B^2} = B\]
+And thus we can conclude that the max impact VTSABS (and by extension IRM) on the dispersion is the bonus
+as an factor, but only as the penalties grows large. In other words VSTABS will reduce the aim circle by 20 \% 
+as a theoretical max, and this will occur while driving or traversing fast. 
+\paragraph{This}
+is however not the direct impact on time to aim. Recall \eqref{eq:gen}. We can now add the factor B in to look at the theoretical max
+reduction in time to aim.
+\[ t = \ln \left(\mathrm{B \times Dispersion_{mod}}\right) \times t_{\mathrm{aiming}}\]
+We can split the logarithm
+
+\[ t = \left(\ln\left(\mathrm{Dispersion_{mod}}\right) + \ln \left( B\right)\right) \times t_{\mathrm{aiming}} \]
+Note that \(\ln B\) will be negative since \( B < 1 \)
+Expanding
+
+\[t = \ln \left( \mathrm{Dispersion_{mod}} \right) \times t_{\mathrm{aiming}} + \ln \left( B \right) \times t_{\mathrm{aiming}} \]
+
+We can see that B will contribute to a flat decrease in time to aim if look at the theoretical max.
+This is however not a static value
+
+\section{GLD vs VSTABS}
+Now it is time to look closer at which point GLD becomes better than both IRM and VSTABS
+
+\[ \ln \left(\mathrm{Dispersion_{modB}}\right) \times t_{\mathrm{aiming}} = \ln \left(\mathrm{Dispersion_{mod}}\right) \times t_{\mathrm{aiming}} \times \mathrm{GLD}\]
+We see that aiming time does not matter, so we can remove it
+\[ \ln \left(\mathrm{Dispersion_{modB}}\right) = \ln \left(\mathrm{Dispersion_{mod}}\right) \times \mathrm{GLD}\]
+Unforunately solving this equation symbolically is impossilbe, however we can solve it numerically.
+GLD intersects IRM at approximately 2.47 and VSTABS at approximately 11.32. The former is quite easily surpassed while the latter is not.
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
