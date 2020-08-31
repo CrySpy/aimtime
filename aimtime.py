@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 t = np.linspace(0, 7, 500)
 
 ticks = np.arange(0,101, 5)

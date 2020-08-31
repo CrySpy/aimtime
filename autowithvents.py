@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from utils import crewbonus, aimfunc, bloomFunc
 
 t = np.linspace(0, 10, 500)
 
@@ -25,24 +26,12 @@ vents_coeff = 0            #Base
 other_crew_coeff = 0       #BiA, Food
 
 acc = 0.38
-speed = 1
 coeff = 4
 aim_time = 2.7
 crew_member_level = 0
 commander_level = 0
 intra_clip = 2.73
 
-
-def crewbonus(crew=100, commander=100, bonus=0):
-    return 0.57 + 0.43 * (crew/100 + commander/1000 + bonus/100 + bonus/1000)
-
-def aimfunc(bloom=1, aimTime=3, accuracy=0.3):
-    arr = bloom * np.exp(-t/aimTime)
-    result = np.maximum(arr, accuracy)
-    return result
-
-def bloomFunc(accuracy=0.3, coeff=0.3):
-    return accuracy * np.sqrt(1+coeff**2)
 
 
 acc =  acc / crewbonus(crew_member_level, commander_level, other_crew_coeff)
@@ -59,11 +48,11 @@ iau_vstab_bloom = bloomFunc(iau_coeff*acc, vstabs_coeff*coeff)
 
 fig, ax = plt.subplots()
 
-ax.plot(t, aimfunc(base_bloom, aim_time, acc), label='Base', linewidth=1.25)
-ax.plot(t, aimfunc(vstabs_bloom, aim_time, acc), label='VSTABS', linewidth=1.25)
-ax.plot(t, aimfunc(irm_vstab_bloom, aim_time, acc), label='IRM + VSTABS', linewidth=1.25)
-ax.plot(t, aimfunc(gld_vstab_bloom, gld_coeff*aim_time, acc), label='GLD + VSTABS', linewidth=1.25)
-ax.plot(t, aimfunc(iau_vstab_bloom, aim_time, iau_coeff*acc), label='IAU + VSTABS', linewidth=1.25)
+ax.plot(t, aimfunc(t, base_bloom, aim_time, acc), label='Base', linewidth=1.25)
+ax.plot(t, aimfunc(t, vstabs_bloom, aim_time, acc), label='VSTABS', linewidth=1.25)
+ax.plot(t, aimfunc(t, irm_vstab_bloom, aim_time, acc), label='IRM + VSTABS', linewidth=1.25)
+ax.plot(t, aimfunc(t, gld_vstab_bloom, gld_coeff*aim_time, acc), label='GLD + VSTABS', linewidth=1.25)
+ax.plot(t, aimfunc(t, iau_vstab_bloom, aim_time, iau_coeff*acc), label='IAU + VSTABS', linewidth=1.25)
 
 plt.axvline(x=intra_clip)
 
@@ -75,5 +64,5 @@ ax.set_title('BatChat 0%crew after firing')
 ax.grid()
 ax.legend()
 
-#plt.show()
-plt.savefig('cursed.png', dpi=600, format='png')
+plt.show()
+#plt.savefig('cursed.png', dpi=600, format='png')

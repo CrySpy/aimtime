@@ -2,15 +2,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
+from utils import time
+
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 x = np.linspace(1.5, 6, 1000) #aiming itme
 y = np.linspace(2, 20, 1000) #modified dispersion
-
-def time(x, y):
-    #return np.log(y)*x
-    return np.log(np.sqrt(1+(y)**2)) * x
 
 
 X, Y = np.meshgrid(x, y)

@@ -1,15 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
+from utils import time
 
 x = np.linspace(1, 6, 1000) #aiming itme
 y = np.linspace(1, 20, 1000) #modified dispersion
 
 arr = np.linspace(0,20,21)
-
-def time(x, y):
-    # return np.log(y)*x
-    return np.log(np.sqrt(1+(y)**2)) * x
 
 X, Y = np.meshgrid(x, y)
 Z = time(X, Y)

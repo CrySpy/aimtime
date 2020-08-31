@@ -22,7 +22,7 @@ FOOD_COEFF = 10
 def crewbonus(crew=100, commander=100, bonus=0):
     return 0.57 + 0.43 * (crew/100 + commander/1000 + bonus/100 + bonus/1000)
 
-def aimfunc(bloom=1, aimTime=3, accuracy=0.3):
+def aimfunc(t, bloom=1, aimTime=3, accuracy=0.3,):
     arr = bloom * np.exp(-t/aimTime)
     result = np.maximum(arr, accuracy)
     return result
