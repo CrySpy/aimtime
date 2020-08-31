@@ -16,7 +16,7 @@ fig, ax = plt.subplots()
 
 ax.plot(x, time(x), label='BASE')
 ax.plot(x, time(x, stabs=0.8), label='VS')
-ax.plot(x, time(x, gld=1/1.1), label='GLD')
+ax.plot(x, time(x, gld=0.909), label='GLD')
 ax.plot(x, time(x, stabs=0.9), label='IRM')
 ax.set_xlabel('Dispersion penalty')
 #ax.set_ylabel('Time to aim')
@@ -30,7 +30,7 @@ plt.show()
 
 
 def prep(y):
-    return time(y, stabs=0.8) - time(y, gld=1/1.1)
+    return time(y, stabs=0.8) - time(y, gld=0.909)
 
 
 #result = optimize.root_scalar(prep, bracket=[0.1, 30])

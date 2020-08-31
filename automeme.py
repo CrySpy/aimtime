@@ -18,10 +18,11 @@ irm_coeff = 0.9            #Base
 #irm_coeff = 0.885          #Category bonus       
 iau_coeff = 0.95           #Base
 #iau_coeff = 0.93           #Category bonus
-gld_coeff = 1/1.1          #Base
-#gld_coeff = 1/1.15         #Category bonus
-#gld_coeff = 1/1.125        #Bounty
-#gld_coeff = 1./1.135       #Bonds
+gld_coeff = 0.909          #Base
+#gld_coeff = 0.91           #Unupgraded bounty           
+#gld_coeff = 0.897          #Category bonus
+#gld_coeff = 0.89           #Bounty
+#gld_coeff = 0.881          #Bonds
 
 
 def aimfunc(bloom=1, aimTime=3, accuracy=0.3):

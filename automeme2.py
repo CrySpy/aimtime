@@ -14,7 +14,7 @@ intra_clip = 2
 vstabs_coeff = 0.8
 irm_coeff = 0.9
 iau_coeff = 0.95
-gld_coeff = 1/1.1
+gld_coeff = 0.909
 
 
 def aimfunc(bloom=1, aimTime=3, accuracy=0.3):
