@@ -6,3 +6,5 @@
 *.synctex.gz
 *.toc
 *.png
+.vscode/
+__pycache__/

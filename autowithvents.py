@@ -34,9 +34,9 @@ intra_clip = 2.73
 
 
 
-acc =  acc / crewbonus(crew_member_level, commander_level, other_crew_coeff)
-coeff = coeff / crewbonus(crew_member_level, commander_level, other_crew_coeff)
-aim_time = aim_time / crewbonus(crew_member_level, commander_level, other_crew_coeff)
+acc =  acc / crewbonus(crew_member_level, commander_level, vents_coeff + other_crew_coeff)
+coeff = coeff / crewbonus(crew_member_level, commander_level, vents_coeff + other_crew_coeff)
+aim_time = aim_time / crewbonus(crew_member_level, commander_level, vents_coeff + other_crew_coeff)
 
 base_bloom = bloomFunc(acc, coeff)
 vstabs_bloom = bloomFunc(acc, vstabs_coeff*coeff)
