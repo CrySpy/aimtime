@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-path = 'C:\\Users\\Christoffer\\Documents\\Aimtime tings'
 
 t = np.linspace(0, 10, 500)
 

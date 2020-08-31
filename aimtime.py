@@ -1,16 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-path = 'C:\\Users\\Christoffer\\Documents\\Aimtime tings'
-
 t = np.linspace(0, 7, 500)
 
 ticks = np.arange(0,101, 5)
 
-BC_acc = 0.32
-BC_speed = 35
-BC_coeff = 0.21
-BC_aim_time = 1.82
+BC_acc = 0.36
+BC_speed = 65
+BC_coeff = 0.16
+BC_aim_time = 2.59
 
 vstabs_coeff = 0.8
 irm_coeff = 0.9
@@ -37,12 +35,12 @@ BC_iau_bloom = bloomFunc(iau_coeff*BC_acc, BC_speed, BC_coeff)
 fig, ax = plt.subplots()
 
 ax.plot(t, aimfunc(BC_base_bloom, BC_aim_time, BC_acc), label='Base', linewidth=1.5)
-#ax.plot(t, aimfunc(BC_vstabs_bloom, BC_aim_time, BC_acc), label='VS', linewidth=2.5)
+ax.plot(t, aimfunc(BC_vstabs_bloom, BC_aim_time, BC_acc), label='VS', linewidth=1.5)
 ax.plot(t, aimfunc(BC_irm_bloom, BC_aim_time, BC_acc), label='IRM', linewidth=1.5)
 ax.plot(t, aimfunc(BC_gld_bloom, gld_coeff*BC_aim_time, BC_acc), label='GLD', linewidth=1.5)
 ax.plot(t, aimfunc(BC_iau_bloom, BC_aim_time, iau_coeff*BC_acc), label='IAU', linewidth=1.5)
 
-ax.set_xlim([0, 4])
+ax.set_xlim([0, 7])
 #ax.set_ylim([0.3, 0.5])
 ax.set_xlabel('t time[s]')
 ax.set_ylabel('y aim circle radius[m]')
