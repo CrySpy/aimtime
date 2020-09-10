@@ -25,12 +25,12 @@ vents_coeff = 0            #Base
 #vents_coeff = 8.5          #Bonds
 other_crew_coeff = 0       #BiA, Food
 
-acc = 0.38
+acc = 0.35
 coeff = 4
-aim_time = 2.7
-crew_member_level = 0
-commander_level = 0
-intra_clip = 2.73
+aim_time = 2.5
+crew_member_level = 100
+commander_level = 100
+intra_clip = 2.5
 
 
 
@@ -56,11 +56,11 @@ ax.plot(t, aimfunc(t, iau_vstab_bloom, aim_time, iau_coeff*acc), label='IAU + VS
 
 plt.axvline(x=intra_clip)
 
-#ax.set_xlim([0,7])
-#ax.set_ylim([0.4, 0.6])
+ax.set_xlim([2,3.5])
+ax.set_ylim([0.3, 0.6])
 ax.set_xlabel('t time[s]')
 ax.set_ylabel('y aim circle radius[m]')
-ax.set_title('BatChat 0%crew after firing')
+ax.set_title('50B after firing')
 ax.grid()
 ax.legend()
 

@@ -4,7 +4,7 @@ from scipy import optimize
 
 
 
-x = np.linspace(0,5,1000)
+x = np.linspace(0,12,1000)
 
 
 
@@ -25,8 +25,8 @@ ax.grid(which='major', color='#666666', linestyle='-')
 ax.grid(which='minor', color='#ccccff', linestyle='-')
 plt.minorticks_on()
 ax.legend()
-plt.show()
-#plt.savefig('glsvsirm.png', dpi=600, format='png')
+#plt.show()
+plt.savefig('glsvsirm.png', dpi=600, format='png')
 
 
 def prep(y):
@@ -34,4 +34,4 @@ def prep(y):
 
 
 #result = optimize.root_scalar(prep, bracket=[0.1, 30])
-#print(result)
+#print(result.root)

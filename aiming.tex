@@ -174,7 +174,27 @@ GLD intersects IRM at approximately 2.47 and VSTABS at approximately 11.32. The 
 
 
 
+% t_B - t_VS/GLD <= t_turrB - t_turrIRM
+% t_B - t_VS/GLD <= angle/S_turrB - angle/S_turrIRM
+% t_B - t_VS/GLD <= angle/S_turrB - angle/(1.1*S_turrB)
+% t_B - t_VS/GLD <= (1.1*angle)/(1.1*S_turrB) - angle/(1.1*S_turrB)
+% t_B - t_VS/GLD <= (1.1*angle - angle)/S_turrIRM
+% t_B - t_VS/GLD <= (angle(1.1-1))/S_turrIRM
+% t_B - t_VS/GLD <= (angle(0.1))/S_turrIRM
 
+
+% irm vs
+% ln(D_mod)*t_a - ln(D_modB)*t_a
+% t_a * ln(D_mod/D_modB) <= (angle(0.1))/S_turrIRM
+
+% irm gld
+% ln(D_mod)*t_a - ln(D_mod)*t_a*0.909
+% t_a(ln(D_mod) - ln(D_mod)*0.909)
+% t_a(ln(D_mod)(1-0.909))
+% t_a(0.091*ln(D_mod))
+
+
+% 0.091*t_a*ln(D_mod) <= (angle(0.1))/S_turrIRM		
 
 
 \end{document}

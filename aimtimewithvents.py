@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from utils import crewbonus, aimfunc, bloomFunc
 
-t = np.linspace(0, 7, 1000)
+t = np.linspace(0, 1, 1000)
 
 ticks = np.arange(0,101, 5)
 
@@ -24,10 +24,10 @@ vents_coeff = 6            #Category bonus
 #vents_coeff = 8.5          #Bonds
 other_crew_coeff = 0        #BiA, Food          
 
-acc = 0.38
-speed = 65
-coeff = 0.17
-aim_time = 2.73
+acc = 0.36
+speed = 16
+coeff = 0.05
+aim_time = 2.1
 crew_member_level = 100
 commander_level = 100
 
@@ -57,16 +57,16 @@ ax.plot(t, aimfunc(t, iau_bloom, aim_time100, iau_coeff*acc100), label='IAU', li
 ax.plot(t, aimfunc(t, vents_bloom, aim_time/vents, acc/vents), label='Vents', linewidth=1.25)
 
 
-#ax.set_xlim([0, 6.5])
-ax.set_xlim([5, 6.5])
-ax.set_ylim([0.3, 0.5])
+ax.set_xlim([0, 0.5])
+#ax.set_xlim([5, 6.5])
+#ax.set_ylim([0.3, 0.5])
 ax.set_xlabel('t time[s]')
 ax.set_ylabel('y aim circle radius[m]')
-ax.set_title('BatChat full speed')
+ax.set_title('Maus turret traverse')
 ax.grid(which='major', color='#666666', linestyle='-')
 ax.grid(which='minor', color='#ccccff', linestyle='-')
 plt.minorticks_on()
 ax.legend()
 
-#plt.show()
-plt.savefig('withvents.png', dpi=600, format='png')
+plt.show()
+#plt.savefig('withvents.png', dpi=600, format='png')
